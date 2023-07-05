@@ -1,7 +1,8 @@
 package com.demirel.stockmanagement.productservice.service.impl;
 
 import com.demirel.stockmanagement.productservice.enums.Language;
-import com.demirel.stockmanagement.productservice.exception.enums.FriendlyMessageCode;
+import com.demirel.stockmanagement.productservice.exception.enums.FriendlyMessageCodes;
+import com.demirel.stockmanagement.productservice.exception.exceptions.ProductNotCreatedException;
 import com.demirel.stockmanagement.productservice.model.entity.Product;
 import com.demirel.stockmanagement.productservice.model.request.ProductCreateRequest;
 import com.demirel.stockmanagement.productservice.model.request.ProductUpdateRequest;
@@ -38,7 +39,7 @@ public class ProductRepositoryImpl implements IProductRepositoryService {
             log.debug("[{}][createProduct] response: {}", this.getClass().getSimpleName(), productResponse);
             return productResponse;
         } catch (Exception e) {
-           throw new ProductNotCreatedException(language, FriendlyMessageCodes.PRODUCT_NOT_CREATED_EXCEPTION,"Product request : " + productCreateRequest.toString());
+            throw new ProductNotCreatedException(language, FriendlyMessageCodes.PRODUCT_NOT_CREATED_EXCEPTION, "Product request : " + productCreateRequest.toString());
         }
 
     }
