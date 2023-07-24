@@ -37,7 +37,7 @@ public class ProductRepositoryServiceImpl implements IProductRepositoryService {
             log.debug("[{}][createProduct] -> response: {}", this.getClass().getSimpleName(), productResponse);
             return productResponse;
         } catch (Exception exception) {
-            throw new ProductNotCreatedException(language, FriendlyMessageCodes.PRODUCT_NOT_CREATED_EXCEPTION, "product request: " + productCreateRequest.toString());
+            throw new ProductNotCreatedException(language, FriendlyMessageCodes.PRODUCT_NOT_CREATED_EXCEPTION, "Product request: " + productCreateRequest.toString());
         }
     }
 
