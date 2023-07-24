@@ -28,6 +28,19 @@ public class GlobalExceptionHandler {
                 .errorMessages(Collections.singletonList(exception.getMessage()))
                 .build();
     }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ProductNotCreatedException.class)
+    public InternalApiResponse<String>handleProductNotFoundException(ProductNotCreatedException exception){
+        return InternalApiResponse.<String>builder()
+                .friendlyMessage(FriendlyMessage.builder()
+                        .title(FriendlyMessageUtils.getFriendlyMessage(exception.getLanguage(), FriendlyMessageCodes.ERROR))
+                        .description(FriendlyMessageUtils.getFriendlyMessage(exception.getLanguage(), exception.getFriendlyMessageCode()))
+                        .build())
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .hasError(true)
+                .errorMessages(Collections.singletonList(exception.getMessage()))
+                .build();
+    }
 
 
 

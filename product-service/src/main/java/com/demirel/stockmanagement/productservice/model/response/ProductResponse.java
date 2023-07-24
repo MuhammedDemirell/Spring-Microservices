@@ -8,10 +8,10 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class ProductResponse {
-    private String productId;
+    private Long productId;
     private String productName;
-    private String quantity;
-    private String price;
+    private Integer quantity;
+    private Double price;
     private Long productCreatedDate;
     private Long productUpdatedDate;
 }

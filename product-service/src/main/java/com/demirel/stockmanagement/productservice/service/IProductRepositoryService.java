@@ -11,9 +11,9 @@ public interface IProductRepositoryService {
 
     Product createProduct(Language language , ProductCreateRequest productCreateRequest);
 
-    Product getProductById(Language language , Long productId);
+    Product getProduct(Language language , Long productId);
 
-    List<Product> getAllProducts(Language language);
+    List<Product> getProducts(Language language);
 
     Product updateProduct(Language language , Long productId , ProductUpdateRequest productUpdateRequest);
 

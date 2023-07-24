@@ -11,7 +11,9 @@ info:
 
 server:
   port: 8080
-
+logging:
+  level:
+    root: ERROR
 ---
 spring:
   profiles: localhost
