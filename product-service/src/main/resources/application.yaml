@@ -13,7 +13,8 @@ server:
   port: 8080
 logging:
   level:
-    root: ERROR
+    root:
+    com.eleiatech: DEBUG
 ---
 spring:
   profiles: localhost

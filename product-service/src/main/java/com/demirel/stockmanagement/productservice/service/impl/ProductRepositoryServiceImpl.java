@@ -2,7 +2,9 @@ package com.demirel.stockmanagement.productservice.service.impl;
 
 import com.demirel.stockmanagement.productservice.enums.Language;
 import com.demirel.stockmanagement.productservice.exception.enums.FriendlyMessageCodes;
+import com.demirel.stockmanagement.productservice.exception.exceptions.ProductAlreadyDeletedException;
 import com.demirel.stockmanagement.productservice.exception.exceptions.ProductNotCreatedException;
+import com.demirel.stockmanagement.productservice.exception.exceptions.ProductNotFoundException;
 import com.demirel.stockmanagement.productservice.model.entity.Product;
 import com.demirel.stockmanagement.productservice.model.request.ProductCreateRequest;
 import com.demirel.stockmanagement.productservice.model.request.ProductUpdateRequest;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,7 +23,6 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class ProductRepositoryServiceImpl implements IProductRepositoryService {
-
     private final ProductRepository productRepository;
 
     @Override
@@ -37,35 +39,59 @@ public class ProductRepositoryServiceImpl implements IProductRepositoryService {
             log.debug("[{}][createProduct] -> response: {}", this.getClass().getSimpleName(), productResponse);
             return productResponse;
         } catch (Exception exception) {
-            throw new ProductNotCreatedException(language, FriendlyMessageCodes.PRODUCT_NOT_CREATED_EXCEPTION, "Product request: " + productCreateRequest.toString());
+            throw new ProductNotCreatedException(language, FriendlyMessageCodes.PRODUCT_NOT_CREATED_EXCEPTION, "product request: " + productCreateRequest.toString());
         }
     }
 
     @Override
     public Product getProduct(Language language, Long productId) {
-        log.debug("[{}][getProduct] -> productId: {}", this.getClass().getSimpleName(), productId);
+        log.debug("[{}][getProduct] -> request productId: {}", this.getClass().getSimpleName(), productId);
         Product product = productRepository.getByProductIdAndDeletedFalse(productId);
         if (Objects.isNull(product)) {
-            throw new ProductNotCreatedException(language, FriendlyMessageCodes.PRODUCT_NOT_FOUND_EXCEPTION, "Product not found for product id: " + productId);
+            throw new ProductNotFoundException(language, FriendlyMessageCodes.PRODUCT_NOT_FOUND_EXCEPTION, "Product not found for product id: " + productId);
         }
         log.debug("[{}][getProduct] -> response: {}", this.getClass().getSimpleName(), product);
         return product;
     }
 
-
-
     @Override
     public List<Product> getProducts(Language language) {
-        return null;
+        log.debug("[{}][getProducts]", this.getClass().getSimpleName());
+        List<Product> products = productRepository.getAllByDeletedFalse();
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException(language, FriendlyMessageCodes.PRODUCT_NOT_FOUND_EXCEPTION, "Products not found");
+        }
+        log.debug("[{}][getProducts] -> response: {}", this.getClass().getSimpleName(), products);
+        return products;
     }
 
     @Override
     public Product updateProduct(Language language, Long productId, ProductUpdateRequest productUpdateRequest) {
-        return null;
+        log.debug("[{}][updateProduct] -> request: {} {}", this.getClass().getSimpleName(), productId, productUpdateRequest);
+        Product product = getProduct(language, productId);
+        product.setProductName(productUpdateRequest.getProductName());
+        product.setQuantity(productUpdateRequest.getQuantity());
+        product.setPrice(productUpdateRequest.getPrice());
+        product.setProductCreatedDate(product.getProductCreatedDate());
+        product.setProductUpdatedDate(new Date());
+        Product productResponse = productRepository.save(product);
+        log.debug("[{}][updateProduct] -> response: {}", this.getClass().getSimpleName(), productResponse);
+        return productResponse;
     }
 
     @Override
     public Product deleteProduct(Language language, Long productId) {
-        return null;
+        log.debug("[{}][deleteProduct] -> request: {}", this.getClass().getSimpleName(), productId);
+        Product product ;
+        try {
+            product = getProduct(language, productId);
+            product.setDeleted(true);
+            product.setProductUpdatedDate(new Date());
+            Product productResponse = productRepository.save(product);
+            log.debug("[{}][deleteProduct] -> response: {}", this.getClass().getSimpleName(), productResponse);
+            return productResponse;
+        } catch (ProductNotFoundException exception) {
+            throw new ProductAlreadyDeletedException(language, FriendlyMessageCodes.PRODUCT_ALREADY_DELETED, "Product already deleted product id : " + productId);
+        }
     }
 }
