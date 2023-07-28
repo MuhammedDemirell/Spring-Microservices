@@ -89,7 +89,7 @@ public class ProductController {
         log.debug("[{}][getProducts]", this.getClass().getSimpleName());
         List<Product> products = productRepositoryService.getProducts(language);
         List<ProductResponse> productResponses = convertProductResponseList(products);
-        log.debug("[{}][getProducts] -> response: {}", this.getClass().getSimpleName(), productResponses);
+        log.debug("[{}][getProducts] -> Response: {}", this.getClass().getSimpleName(), productResponses);
         return InternalApiResponse.<List<ProductResponse>>builder()
                 .httpStatus(HttpStatus.OK)
                 .hasError(false)
