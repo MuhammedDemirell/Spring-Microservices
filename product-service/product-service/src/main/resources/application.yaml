@@ -1,23 +1,23 @@
 spring:
   application:
     name: product-service
-  profiles:
-    active: localhost
-  main:
-    allow-bean-definition-overriding: true
+  config:
+    activate:
+      on-profile: localhost
 info:
   component: Product Service
-
 
 server:
   port: 8080
 logging:
   level:
-    root:
+    root: off
     com.eleiatech: DEBUG
 ---
 spring:
-  profiles: localhost
+  config:
+    activate:
+      on-profile: localhost  # This is the correct way to activate the "localhost" profile
   cloud:
     config:
       uri: http://localhost:8888
@@ -33,5 +33,9 @@ spring:
     username: postgres
     password: 123123
 
-
-
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka

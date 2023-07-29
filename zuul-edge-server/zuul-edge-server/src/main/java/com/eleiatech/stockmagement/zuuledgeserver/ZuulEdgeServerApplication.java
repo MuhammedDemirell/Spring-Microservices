@@ -9,8 +9,8 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @EnableDiscoveryClient
-@SpringBootApplication
 @EnableEurekaClient
+@SpringBootApplication
 @EnableZuulProxy
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class ZuulEdgeServerApplication {

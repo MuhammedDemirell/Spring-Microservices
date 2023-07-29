@@ -19,3 +19,10 @@ eureka:
     instance-id: ${spring.application.name}:${random.uuid}
 server:
   port: 8762
+
+zuul:
+  routes:
+    product-service:
+      path: /api/1.0/product/**
+      service-id: product-service
+      strip-prefix: false
