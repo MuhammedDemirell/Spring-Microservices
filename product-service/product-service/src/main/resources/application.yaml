@@ -1,23 +1,26 @@
 spring:
   application:
     name: product-service
-  config:
-    activate:
-      on-profile: localhost
+  profiles:
+    active: localhost
+  main:
+    allow-bean-definition-overriding: true
 info:
   component: Product Service
 
+
 server:
-  port: 8080
+  port: 9788
+
 logging:
   level:
-    root: off
+    root:
     com.eleiatech: DEBUG
 ---
 spring:
   config:
     activate:
-      on-profile: localhost  # This is the correct way to activate the "localhost" profile
+      on-profile: localhost
   cloud:
     config:
       uri: http://localhost:8888
@@ -35,7 +38,9 @@ spring:
 
 eureka:
   instance:
+    prefer-ip-address: true
+    # enable to register multiple app instances with a random server port
     instance-id: ${spring.application.name}:${random.uuid}
   client:
     service-url:
-      default-zone: http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka/
