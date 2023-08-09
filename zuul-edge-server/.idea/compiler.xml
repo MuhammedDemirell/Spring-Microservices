@@ -6,17 +6,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="zuul-edge-server" />
         <module name="demo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="zuul-edge-server" target="17" />
+      <module name="accountservice" target="1.8" />
+      <module name="zuul-edge-server" target="11" />
+      <module name="zuul-edge-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="demo" options="-parameters" />
       <module name="zuul-edge-server" options="-parameters" />
+      <module name="zuul-edge-service" options="-parameters" />
     </option>
   </component>
 </project>
